@@ -1,0 +1,161 @@
+---
+openapi: 3.0.1
+info:
+  title: API V1
+  version: v1
+  description: API documentation for user authentication endpoints
+paths:
+  "/auth/signup":
+    post:
+      summary: Create User
+      tags:
+      - Authentication
+      parameters: []
+      responses:
+        '201':
+          description: user created
+        '422':
+          description: invalid request
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  example: test@gmail.com
+                first_name:
+                  type: string
+                  example: test
+                last_name:
+                  type: string
+                  example: user
+                password:
+                  type: string
+                  example: '12345678'
+                password_confirmation:
+                  type: string
+                  example: '12345678'
+              required:
+              - email
+              - first_name
+              - last_name
+              - password
+              - password_confirmation
+        required: true
+  "/auth/login":
+    post:
+      summary: Sign In User
+      tags:
+      - Authentication
+      parameters: []
+      responses:
+        '200':
+          description: user signed in
+        '401':
+          description: unauthorized
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  example: test@gmail.com
+                password:
+                  type: string
+                  example: '12345678'
+              required:
+              - email
+              - password
+        required: true
+  "/auth/logout":
+    put:
+      summary: Sign Out
+      tags:
+      - Authentication
+      parameters: []
+      responses:
+        '200':
+          description: user signed out
+        '404':
+          description: user not found
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  example: test@gmail.com
+              required:
+              - email
+        required: true
+  "/registrations/forgot_password":
+    post:
+      summary: Forgot Password
+      tags:
+      - Authentication
+      parameters: []
+      responses:
+        '200':
+          description: password reset instructions sent
+        '404':
+          description: user not found
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  example: test@gmail.com
+              required:
+              - email
+        required: true
+  "/registrations/reset_password":
+    post:
+      summary: Reset Password
+      tags:
+      - Authentication
+      parameters: []
+      responses:
+        '200':
+          description: password updated successfully
+        '422':
+          description: unprocessable entity
+        '404':
+          description: user not found
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  example: test@gmail.com
+                new_password:
+                  type: string
+                  example: newpassword123
+                password_confirmation:
+                  type: string
+                  example: newpassword123
+              required:
+              - email
+              - new_password
+              - password_confirmation
+        required: true
+components:
+  securitySchemes:
+    Bearer:
+      type: apiKey
+      name: Authorization
+      in: header
+      description: Your Bearer token
+servers:
+- url: http://127.0.0.1:8080/api/v1
